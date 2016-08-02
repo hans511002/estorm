@@ -1,0 +1,81 @@
+<project name="estorm" default="comJar" basedir="." >
+	<property name="version" value="1.0.0" />
+ 	<property name="destFile" value="${ant.project.name}-${version}" />
+	<property name="src" location="./src" />
+	<property name="classes.dir" location="./classes" />
+	<property name="release.dir" location="./release" />
+	<property name="lib.dir" location="./lib" />
+	<property name="main-class" value="" />
+	<path id="project.classpath">
+			<fileset dir="${lib.dir}">
+			    <include name="*.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}/hadoop">
+			    <include name="*.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}/hbase">
+			    <include name="*.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}/kafka">
+			    <include name="*.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}/rdbms">
+			    <include name="*.jar" />
+			</fileset> 
+			<fileset dir="${lib.dir}/storm">
+			    <include name="*.jar" />
+			</fileset> 
+	</path>
+	 <!-- clean -->
+	    <target name="clean">
+	      <delete dir="${classes.dir}" /> 
+	    	<!--  <delete file="${classes.dir}/*" /> -->
+	      <echo message="clean dir ${classes.dir}/*"></echo>
+	    </target>
+	<!-- generate directory -->
+		<target name="init" depends="clean">
+			<tstamp />
+ 			<mkdir dir="${release.dir}" />
+ 			<mkdir dir="${classes.dir}" />
+		</target>
+	
+	<!-- compile java depends="init"-->
+		<target name="compile" >
+		    <javac srcdir="${src}" destdir="${classes.dir}"   debuglevel="lines, vars, source" includeantruntime="no" 
+				bootclasspath="${java.home}/lib/rt.jar" encoding="utf-8"  fork="yes" memoryMaximumSize="512m">
+				<compilerarg line="-encoding UTF-8"/>
+				<classpath refid="project.classpath" />
+			</javac> 
+				<!-- 给编译器指定编码，防止出现："警告： 编码 GBK 的不可映射字符"   debug="on" -->
+			<copy  todir="${classes.dir}" ><fileset dir="${src}"  >
+			    <include name="estorm-webapps/" />
+			 </fileset> </copy>
+  		</target>
+ 
+	<!-- comjar -->
+		<target name="comJar" depends="compile" >
+			<mkdir dir="${release.dir}" />
+			<jar jarfile="${release.dir}/${destFile}.jar" basedir="${classes.dir}">
+				<exclude name="*.properties"/>
+				<manifest>
+					<attribute name="Built-By" value="hans" />
+					<attribute name="Main-Class" value="${main-class}" />
+				</manifest>
+			</jar>
+	        <copy todir="./" file="${release.dir}/${destFile}.jar"/>
+    </target>
+	<target name="package_all" depends="comJar" description="服务端程序打包">
+	        <tar destfile="${release.dir}/${destFile}.tar"> 
+	            <fileset dir="${basedir}">
+	                <include name="bin/"/> 
+	                <include name="conf/"/>
+ 	                <include name="lib/"/>
+	                <include name="${destFile}.jar"/>
+	            </fileset>
+	        </tar>
+	    	<gzip destfile="${release.dir}/${destFile}.tar.gz" src="${release.dir}/${destFile}.tar"/> 
+	    	<delete file="${release.dir}/${destFile}.tar"></delete>
+	    </target>
+
+
+</project>

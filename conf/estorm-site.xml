@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+<configuration> 
+<property>
+  <name>rescource.configuration.files</name>
+  <value>hbase-site.xml</value>
+  <description>list</description> 
+</property>
+<property>
+	<name>config.db.driver</name>
+	<value>org.gjt.mm.mysql.Driver</value>
+	<description>oracle.jdbc.driver.OracleDriver</description>
+</property>
+<property>
+	<name>config.db.connecturl</name>
+	<value>jdbc:mysql://wxdb06:3309/estorm</value>
+	<description>jdbc:oracle:thin:@192.168.11.11:1521:ora10</description>
+</property>
+<property>
+	<name>config.db.connectuser</name>
+	<value>mydb</value>
+</property>
+<property>
+	<name>config.db.connectpass</name>
+	<value>mydb</value>
+</property>
+<property>
+	<name>estorm.master.ipc.address</name>
+	<value></value>
+</property>
+<property>
+	<name>estorm.master.port</name>
+	<value>3000</value>
+</property>
+<property>
+	<name>estorm.max.client.size</name>
+	<value>1000</value>
+</property>
+<property>
+	<name>estorm.master.info.port</name>
+	<value>30010</value>
+</property>
+ <property>
+    <name>estorm.zookeeper.quorum</name>
+    <value>wxdb03:2181,wxdb04:2181,wxdb05:2181</value>
+  </property>
+  <property>
+	<name>zookeeper.recovery.retry</name>
+	<value>5</value>
+</property>
+  <property>
+	<name>zookeeper.recovery.retry.intervalmill</name>
+	<value>1000</value>
+</property>
+  <property>
+	<name>zookeeper.dump.connection.timeout</name>
+	<value>1000</value>
+</property>
+  <property>
+	<name>zookeeper.session.timeout</name>
+	<value>60000</value>
+</property>
+
+<!-- 中间结果缓存配置 -->
+<property>
+	<name>estorm.node.data.procedure.cache.type</name>
+	<value>hbase</value>
+	<description>hbase/oracle/mysql/ob/
+	hbase/oracle/mysql/ob 	 需要支持高并发快速修改</description>
+</property>
+<property>
+	<name>estorm.node.data.procedure.cache.params</name>
+	<value>hbase.master.port=60000;zookeeper.znode.parent=/hbase;hbase.zookeeper.quorum=wxdb03:2181,wxdb04:2181,wxdb05:2181</value>
+	<description>hbase zkNode
+	oracle/mysql/ob connect Url(user/pass@url [,driver]) </description>
+</property>
+<!-- 关联数据外部存储 -->
+<property>
+	<name>estorm.joindata.store.type</name>
+	<value>hbase</value>
+	<description>hbase/oracle/mysql/ob/file  
+	hbase/oracle/mysql/ob 	支持本身的数据配置关联表，不加载关联数据
+	file 只支持Hbase不加载关联数据，其它数据均入文件索引</description>
+</property>
+<property>
+	<name>estorm.joindata.store.params</name>
+	<value>hbase.master.port=60000;zookeeper.znode.parent=/hbase;hbase.zookeeper.quorum=wxdb03:2181,wxdb04:2181,wxdb05:2181</value>
+	<description>hbase zkNode
+	oracle/mysql/ob connect Url(user/pass@url [,driver])</description>
+</property>
+
+<!--  -->
+<property>
+<name>storm.home</name>
+<value>D:\mpp\install\storm-0.9.0.1</value>
+</property>
+
+<property>
+<name>storm.nimbus.host</name>
+<value>wxdb01</value>
+</property>
+<property>
+<name>storm.nimbus.thrift.port</name>
+<value>6827</value>
+</property>
+<property>
+<name>storm.zookeeper.baseznode</name>
+<value>/storm0.10.0</value>
+</property>
+ 
+<property>
+<name>storm.kafka.root.znode</name>
+<value>/kafka</value>
+</property>
+<property>
+<name>estorm.node.log.flush.interval</name>
+<value>60000</value>
+</property>
+<property>
+<name>estorm.config.listen.interval</name>
+<value>20000</value>
+</property>
+ 
+
+
+</configuration>
